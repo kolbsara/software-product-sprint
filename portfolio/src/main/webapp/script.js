@@ -17,11 +17,11 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!', 'Bears, Beets, Battle Star Galactica'];
+      ['Bears, Beets, Battle Star Galactica', 'Identity theft is not a joke, Jim!', 'That\'s what she said'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
+n
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
