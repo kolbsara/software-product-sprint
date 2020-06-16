@@ -28,7 +28,8 @@ function addRandomGreeting() {
 }
 
 function getGreeting() {
-  fetch('/data').then(response => response.text()).then((text) => {
-    document.getElementById('data-greeting').innerText = text;
+  fetch('/data').then(response => response.json()).then((outputStrings) => {
+    const documentElement = document.getElementById('data-greeting');
+    documentElement.innerText = outputStrings;
   });
 }
