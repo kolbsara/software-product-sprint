@@ -27,7 +27,7 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-function getGreetingUsingArrow() {
+function getGreeting() {
   fetch('/data').then(response => response.text()).then((text) => {
     document.getElementById('data-greeting').innerText = text;
   });
