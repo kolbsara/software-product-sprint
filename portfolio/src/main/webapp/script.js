@@ -16,8 +16,10 @@
  * Adds a random greeting to the page.
  */
 function addRandomGreeting() {
-  const greetings =
-      ['Bears, Beets, Battle Star Galactica', 'Identity theft is not a joke, Jim!', 'Thats what she said'];
+  const greetings = [
+    'Bears, Beets, Battle Star Galactica', 'Identity theft is not a joke, Jim!',
+    'Thats what she said'
+  ];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -28,7 +30,8 @@ function addRandomGreeting() {
 }
 
 function getGreeting() {
-  fetch('/data').then(response => response.text()).then((text) => {
-    document.getElementById('data-greeting').innerText = text;
+  fetch('/data').then(response => response.json()).then((greetings) => {
+    const documentElement = document.getElementById('data-greeting');
+    documentElement.innerText = greetings;
   });
 }
