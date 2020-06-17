@@ -15,33 +15,32 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
-import java.util.ArrayList;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
-    private final ArrayList<String> greetings = new ArrayList<String>("I love salamanders", "Macarons are my favorite food","How do you like these apples");
+  private final ArrayList greetings = new ArrayList<String>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    String json = convertToJson(outputStrings);
+    greetings.add("I love salamanders");
+    greetings.add("Macarons are my favorite food");
+    greetings.add("How do you like these apples");
+    String json = convertToJson(greetings);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
   private String convertToJson(ArrayList<String> toBeConverted) {
-      Gson gson = new Gson();
-      String json = gson.toJson(toBeConverted);
-      return json;
+    Gson gson = new Gson();
+    String json = gson.toJson(toBeConverted);
+    return json;
   }
 }
-
-
