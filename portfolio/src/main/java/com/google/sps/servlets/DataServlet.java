@@ -34,14 +34,8 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String currcomment = request.getParameter("comment");
-    System.out.println(currcomment);
-
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("content", currcomment);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
-
+    String currComment = request.getParameter("comment");
+    writeComments(currComment);
     response.sendRedirect("/index.html");
 
     // String currcomment = getParameter(request, "comment", "");
@@ -49,6 +43,14 @@ public class DataServlet extends HttpServlet {
     // response.setContentType("application/json;");
     // String json = convertToJson(comments);
     // response.getWriter().println(json);
+  }
+
+  private void writeComments(String currComment) {
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("content", currComment);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+      
   }
 
   private String convertToJson(List<String> toBeConverted) {
