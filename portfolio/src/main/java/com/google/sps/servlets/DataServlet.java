@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,11 +34,23 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String currcomment = getParameter(request, "comment", "");
-    comments.add(currcomment);
-    response.setContentType("application/json;");
-    String json = convertToJson(comments);
-    response.getWriter().println(json);
+    String currComment = request.getParameter("comment");
+    writeComments(currComment);
+    response.sendRedirect("/index.html");
+
+    // String currcomment = getParameter(request, "comment", "");
+    // comments.add(currcomment);
+    // response.setContentType("application/json;");
+    // String json = convertToJson(comments);
+    // response.getWriter().println(json);
+  }
+
+  private void writeComments(String currComment) {
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("content", currComment);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+      
   }
 
   private String convertToJson(List<String> toBeConverted) {
