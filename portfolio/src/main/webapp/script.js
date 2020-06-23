@@ -29,9 +29,25 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-function getComments() {
-  fetch('/data').then(response => response.json()).then((comments) => {
-    const documentElement = document.getElementById('comment-data');
-    documentElement.innerText = comments;
-  });
+// function getComments() {
+//   fetch('/data').then(response => response.json()).then((comments) => {
+//     const documentElement = document.getElementById('comment-data');
+//     documentElement.innerText = comments;
+//   });
+// }
+
+function requestTranslation() {
+  const text = document.getElementById('text').value;
+  const languageCode = document.getElementById('language').value;
+
+  const params = new URLSearchParams();
+  params.append('text', text);
+  params.append('languageCode', languageCode);
+
+  fetch('/data', {method: 'POST', body: params})
+      .then(response => response.json())
+      .then((comments) => {
+        const documentElement = document.getElementById('comment-data');
+        documentElement.innerText = comments;
+      });
 }
