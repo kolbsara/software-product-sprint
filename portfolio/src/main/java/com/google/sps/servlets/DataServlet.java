@@ -40,17 +40,15 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String originalText = request.getParameter("text");
     String languageCode = request.getParameter("languageCode");
-
-    // Do the translation.
     Translate translate = TranslateOptions.getDefaultInstance().getService();
     Translation translation =
         translate.translate(originalText, Translate.TranslateOption.targetLanguage(languageCode));
     String translatedText = translation.getTranslatedText();
-
     writeComments(translatedText);
     System.out.println(translatedText);
     String json = convertToJson(readComments());
-    response.setContentType("application/json;");
+    response.setContentType("application/json; charset=UTF-8");
+    response.setCharacterEncoding("UTF-8");
     response.getWriter().println(json);
   }
 

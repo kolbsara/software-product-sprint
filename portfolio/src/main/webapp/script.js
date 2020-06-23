@@ -29,13 +29,6 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-// function getComments() {
-//   fetch('/data').then(response => response.json()).then((comments) => {
-//     const documentElement = document.getElementById('comment-data');
-//     documentElement.innerText = comments;
-//   });
-// }
-
 function requestTranslation() {
   const text = document.getElementById('text').value;
   const languageCode = document.getElementById('language').value;
@@ -43,11 +36,12 @@ function requestTranslation() {
   const params = new URLSearchParams();
   params.append('text', text);
   params.append('languageCode', languageCode);
-
-  fetch('/data', {method: 'POST', body: params})
-      .then(response => response.json())
-      .then((comments) => {
-        const documentElement = document.getElementById('comment-data');
-        documentElement.innerText = comments;
-      });
+  const resultContainer = document.getElementById('result');
+  fetch('/data', {
+    method: 'POST',
+    body: params
+    }).then(response => response.text())
+    .then((translatedMessage) => {
+        resultContainer.innerText = translatedMessage;
+    });
 }
