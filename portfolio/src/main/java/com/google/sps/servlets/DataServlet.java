@@ -17,6 +17,8 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,20 +31,15 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
-public class DataServlet extends HttpServlet {
-  private final List<String> comments = new ArrayList<>();
 
+public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String currComment = request.getParameter("comment");
     writeComments(currComment);
-    response.sendRedirect("/index.html");
-
-    // String currcomment = getParameter(request, "comment", "");
-    // comments.add(currcomment);
-    // response.setContentType("application/json;");
-    // String json = convertToJson(comments);
-    // response.getWriter().println(json);
+    String json = convertToJson(readComments());
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
   }
 
   private void writeComments(String currComment) {
@@ -50,20 +47,25 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("content", currComment);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
-      
+  }
+
+  private List readComments() {
+    Query query = new Query("Comment");
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<String> comments = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      String currComment = (String) entity.getProperty("content");
+      comments.add(currComment);
+    }
+    return comments;
   }
 
   private String convertToJson(List<String> toBeConverted) {
     Gson gson = new Gson();
     String json = gson.toJson(toBeConverted);
     return json;
-  }
-
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    if (value == null) {
-      return defaultValue;
-    }
-    return value;
   }
 }
