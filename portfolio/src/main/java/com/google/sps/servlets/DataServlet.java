@@ -37,9 +37,8 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String currComment = request.getParameter("comment");
     writeComments(currComment);
-    List<String> comments = readComments();
+    String json = convertToJson(readComments());
     response.setContentType("application/json;");
-    String json = convertToJson(comments);
     response.getWriter().println(json);
   }
 
