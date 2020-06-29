@@ -39,7 +39,7 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String translatedText = translateComment(request);
-    if(translatedText != "") {
+    if(!translatedText.isEmpty()) {
         writeComments(translatedText);
         System.out.println(translatedText);
         String json = convertToJson(readComments());
