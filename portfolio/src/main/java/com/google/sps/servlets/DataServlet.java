@@ -38,18 +38,28 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String translatedText = translateComment(request);
+    if(translatedText != "") {
+        writeComments(translatedText);
+        System.out.println(translatedText);
+        String json = convertToJson(readComments());
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().println(json);
+    }
+  }
+
+  private String translateComment(HttpServletRequest request) {
     String originalText = request.getParameter("text");
     String languageCode = request.getParameter("languageCode");
+    if(originalText == "" || languageCode == "") return "";
+    if(languageCode == "en") return originalText;
     Translate translate = TranslateOptions.getDefaultInstance().getService();
     Translation translation =
         translate.translate(originalText, Translate.TranslateOption.targetLanguage(languageCode));
     String translatedText = translation.getTranslatedText();
-    writeComments(translatedText);
-    System.out.println(translatedText);
-    String json = convertToJson(readComments());
-    response.setContentType("application/json; charset=UTF-8");
-    response.setCharacterEncoding("UTF-8");
-    response.getWriter().println(json);
+    return translatedText;
+
   }
 
   private void writeComments(String currComment) {

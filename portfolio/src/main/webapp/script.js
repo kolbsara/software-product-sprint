@@ -30,13 +30,13 @@ function addRandomGreeting() {
 }
 
 function requestTranslation() {
-  const text = document.getElementById('text').value;
+  const comment = document.getElementById('comment').value;
   const languageCode = document.getElementById('language').value;
 
   const params = new URLSearchParams();
-  params.append('text', text);
+  params.append('text', comment);
   params.append('languageCode', languageCode);
-  const resultContainer = document.getElementById('result');
+  const resultContainer = document.getElementById('translatedComment');
   fetch('/data', {
     method: 'POST',
     body: params
