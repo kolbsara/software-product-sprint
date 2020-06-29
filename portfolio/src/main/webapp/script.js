@@ -29,9 +29,19 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-function getComments() {
-  fetch('/data').then(response => response.json()).then((comments) => {
-    const documentElement = document.getElementById('comment-data');
-    documentElement.innerText = comments;
-  });
+function requestTranslation() {
+  const comment = document.getElementById('comment').value;
+  const languageCode = document.getElementById('language').value;
+
+  const params = new URLSearchParams();
+  params.append('text', comment);
+  params.append('languageCode', languageCode);
+  const resultContainer = document.getElementById('translatedComment');
+  fetch('/data', {
+    method: 'POST',
+    body: params
+    }).then(response => response.text())
+    .then((translatedMessage) => {
+        resultContainer.innerText = translatedMessage;
+    });
 }
